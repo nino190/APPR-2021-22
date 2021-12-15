@@ -8,7 +8,7 @@ V slopu mojega projekta si bomo pogledali statistiko prodaje alkoholne pijače V
 Najprej si bomo ogledali splošno prodajo in konzumacijo izdelka in vpliv na celoten trg alkoholnih pijač.
 Nadalje bomo razdelili podatke na različne tipe in znamke vodk ter primerjali vpliv smernikov (na primer kakovost, cena, dostopnost) na prodajo posameznega izdelka.
 
-## Podatki [https://www.statista.com/topics/3741/vodka-industry/#dossierKeyfigures](https://www.statista.com/topics/3741/vodka-industry/#dossierKeyfigures): ##
+## Podatki [(https://www.statista.com/topics/3741/vodka-industry/#dossierKeyfigures)](https://www.statista.com/topics/3741/vodka-industry/#dossierKeyfigures): ##
 1. Statistika prodaje:
 * Svetovna prodaja
 * Velikost trga v Ameriki in Evropi
