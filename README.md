@@ -36,3 +36,4 @@ Glavni program in poročilo se nahajata v datoteki projekt.Rmd. Ko ga prevedemo,
 * napredna analiza podatkov: analiza/analiza.r
 Vnaprej pripravljene funkcije se nahajo v mapi lib/. Potrebne knjižnice so v datoteki lib/libraries.r
 Podatkovni tipi so v mapi podatki/. Zemljevidi v obliki SHP, ki jih program pobere, se shranijo v mapo ../zemljevidi/ (izven mapre projekta).
+Več povezav do podatkov za posamezne znamke in tipe bo dodanih naknadno.
