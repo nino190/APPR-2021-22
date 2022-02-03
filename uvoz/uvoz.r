@@ -1,20 +1,24 @@
 #2. faza
 library(tabulizer)
+
+sl <- locale("sl", decimal_mark=",", grouping_mark=".")
+
+
 uvoz_nesrec <- function(ime){
     # kategorija <- c("zaporedna_stevilka", "klasifikacija", "postaja", "datum", "ura", "v_naselju", "lokacija", "vrsta_ceste_naselja", 
     #                 "sifra_ceste_naselja", "tekst_cesta_naselje", "sifra_odseka_ulice", "tekst_odseka_ulice", "stacionaza", "opis", "vzrok", "tip", "vreme",
     #                 "stanje_prometa", "stanje_vozisca", "vrsta_vozisca", "longitude", "latitude", "zap_st_osebe", "povzrocitelj", "starost", "spol", "UE_stalnega_prebivalisca",
     #                 "drzavljanstvo", "poskodba_udelezenca", "vrsta_udelezenca", "varnostni_pas", "vozniski_staz_leta", "vozniski_staz_mesec", "alkotest", "pregled")
     
-    return(read.table(as.character(ime), sep = ";", fill = TRUE, as.is = TRUE, header = TRUE, col.names = c("zaporedna_stevilka", "klasifikacija", "postaja", "datum", "ura", "v_naselju", "lokacija", "vrsta_ceste_naselja", 
+    return(read.table(as.character(ime), sep = ";", dec = ",", fill = TRUE, as.is = TRUE, header = TRUE, col.names = c("zaporedna_stevilka", "klasifikacija", "postaja", "datum", "ura", "v_naselju", "lokacija", "vrsta_ceste_naselja", 
                     "sifra_ceste_naselja", "tekst_cesta_naselje", "sifra_odseka_ulice", "tekst_odseka_ulice", "stacionaza", "opis", "vzrok", "tip", "vreme",
                     "stanje_prometa", "stanje_vozisca", "vrsta_vozisca", "geo_x", "geo_y", "zap_st_osebe", "povzrocitelj", "starost", "spol", "UE_stalnega_prebivalisca",
                     "drzavljanstvo", "poskodba_udelezenca", "vrsta_udelezenca", "varnostni_pas", "vozniski_staz_leta", "vozniski_staz_mesec", "alkotest", "pregled"), fileEncoding = "Windows-1250"))
 }
 
 cat("Uvažanje podatkov o nesrečah..\n")
-nesrece2005 <- uvoz_nesrec("podatki/pn2005.csv")
-nesrece2005 <- nesrece2005[!duplicated(nesrece2005$zaporedna_stevilka),]
+# nesrece2005 <- uvoz_nesrec("podatki/pn2005.csv")
+# nesrece2005 <- nesrece2005[!duplicated(nesrece2005$zaporedna_stevilka),]
 # nesrece2006 <- uvoz_nesrec("podatki/pn2006.csv")
 # nesrece2006 <- nesrece2006[!duplicated(nesrece2006$zaporedna_stevilka),]
 # nesrece2007 <- uvoz_nesrec("podatki/pn2007.csv")
@@ -54,7 +58,7 @@ uvoz_nesrec_leta <- function(ime){
     leta <- 2005:2014
     return(read.table("podatki/st_urad_leta.csv", sep =";", as.is = TRUE, skip = 2, header = TRUE, col.names = c("Mesec", as.vector(outer(kategorija2, leta, paste0))), fileEncoding = "Windows-1250", row.names = 1))
 }
-cat("Uvažanje podatkov o nesrečah po mesecih..\n")
+cat("Uvazanje podatkov o nesrecah po mesecih..\n")
 
 nesrece_leta <- uvoz_nesrec_leta()
 
@@ -63,27 +67,73 @@ seznam_PP <- do.call(rbind, ekstrat)
 seznam_PP <- as.data.frame(seznam_PP)
 headers <- c("stevilka", "ime", "PU")
 names(seznam_PP) <- headers
-
-
 seznam_PU <- distinct(seznam_PP[c("PU")])
-
 seznam_imen_PP <- seznam_PP[c("ime")]
 
-sestevek_PP <- table(nesrece2005$postaja)
+# sl <- locale("sl", decimal_mark=",", grouping_mark=".")
 
-names(sestevek_PP) <- c("napaka", names(sestevek_PP[-1]))
+nesrece_uprava <- rep(0, 16)
+nesrece_alkotest <- rep(0, 16)
+nesrece_vzrok <- rep(0, 16)
+sestevek_nesrece <- rep(0, 16)
 
-seznam_nesrec <- rep(0, length(seznam_PU[ ,"PU"]))
 
-names(seznam_nesrec) <- seznam_PU[ ,"PU"]
 
-for (pp in names(sestevek_PP)){
-    for (i in 1:as.integer(tail(seznam_PP["stevilka"], n = 1))) {
-        if (grepl(paste("POLICIJSKA POSTAJA ", pp, sep = ""), seznam_PP[i, "ime"])) {
-            seznam_nesrec[seznam_PP[i, "PU"]] <- as.integer(seznam_nesrec[seznam_PP[i, "PU"]]) + as.integer(sestevek_PP[pp])
-            break
+nesrece <- data.frame(x1 = 1:8)
+rownames(nesrece) <- seznam_PU[,"PU"]
+years <- 2005:2020
+
+vzrok <- data.frame(x1 = 1:11)
+
+sestavi <- function(){
+    for (i in 2005:2020){
+        a <- i - 2004
+        leto <- uvoz_nesrec(paste("podatki/pn", as.character(i), ".csv", sep = ""))
+        leto <- leto[!duplicated(leto$zaporedna_stevilka),]
+        poz_alko <- 0
+
+        for (k in 1:as.integer(tail(leto["zaporedna_stevilka"], n = 1))) {
+            if (leto[k, "alkotest"] > 0) {
+                poz_alko <- poz_alko + 1
+            }
+            else if (leto[k, "pregled"] > 0) {
+                poz_alko <- poz_alko + 1
+            }
         }
-    }
-}
-#sl <- locale("sl", decimal_mark=",", grouping_mark=".")
+        nesrece_alkotest[a] <<- poz_alko
 
+        sestevek_PP <- table(leto$postaja)
+        names(sestevek_PP) <- c("napaka", names(sestevek_PP[-1]))
+        seznam_nesrec <- rep(0, length(seznam_PU[ ,"PU"]))
+        names(seznam_nesrec) <- seznam_PU[ ,"PU"]
+        for (pp in names(sestevek_PP)){
+            for (k in 1:as.integer(tail(seznam_PP["stevilka"], n = 1))) {
+                if (grepl(paste("POLICIJSKA POSTAJA ", pp, sep = ""), seznam_PP[k, "ime"])) {
+                    seznam_nesrec[seznam_PP[k, "PU"]] <- as.integer(seznam_nesrec[seznam_PP[k, "PU"]]) + as.integer(sestevek_PP[pp])
+                    break
+                }
+            }
+        }
+        
+        nesrece[a] <<- seznam_nesrec
+        sestevek_nesrece[a] <<- sum(seznam_nesrec)
+
+        seznam_vzrok <- distinct(leto["vzrok"])
+        sestevek_vzrok <- table(leto["vzrok"])
+        vzrok[a] <<- sestevek_vzrok
+
+    }
+    return()
+}
+
+sestavi()
+names(nesrece_alkotest) <- as.vector(as.character(years))
+names(sestevek_nesrece) <- as.vector(as.character(years))
+sestevek_nesrece <- t(sestevek_nesrece)
+names(nesrece) <- as.vector(as.character(years))
+names(vzrok) <- as.vector(as.character(years))
+rownames(vzrok) <- seznam_vzrok[,"vzrok"]
+nesrece <- data.frame(t(nesrece))
+vzrok <- data.frame(t(vzrok))
+colnames(nesrece) <- make.names(colnames(nesrece))
+colnames(vzrok) <- make.names(colnames(vzrok))

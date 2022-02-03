@@ -1,5 +1,7 @@
 #3. faza
 source("uvoz/uvoz.r")
+source("libraries/uvozi.zemljevid.r")
+source("libraries/libraries.r")
 
 nesrece_leta <- uvoz_nesrec_leta()
 
@@ -30,16 +32,34 @@ for (pp in names(sestevek_PP)){
         }
     }
 }
+zem_slo <- uvozi.zemljevid("http://biogeo.ucdavis.edu/data/gadm2.8/shp/SVN_adm_shp.zip", "SVN_adm1", encoding = "UTF-8")
 
-#zemljevid <- zemljevid_nesrec()
+nesrece_alkohol <- barplot(nesrece_alkotest)
+nesrece_skupaj <- barplot(sestevek_nesrece)
 
-#lon_2005 <- nesrece2005$longitude
-#lat_2005 <- nesrece2006$latitude
+graf_lj_mb <- ggplot() +
+  layer(
+    data = nesrece,
+    mapping = aes(x = PU.LJUBLJANA, y = PU.MARIBOR),
+    geom = "point",
+    stat = "identity",
+    position = "identity"
+  ) + 
+  scale_y_continuous() +
+  scale_x_continuous() +
+  coord_cartesian() +
+  ggtitle("Primerjava prometnih nesreč na območju PU Ljubljana in PU Maribor") + xlab("število nesreč na območju PU Ljubljana") + ylab("Število nesreč na območju PU Maribor")
 
-#koordinate_2005 <- as.data.frame(cbind(lon_2005, lat_2005))
+graf_tovor_cesta <- ggplot() +
+  layer(
+    data = vzrok,
+    mapping = aes(x = NEUPOSTEVANJE.PRAVIL.O.PREDNOSTI, y = NEPRAVILNOST.NA.CESTI),
+    geom = "line",
+    stat = "identity",
+    position = "identity"
+  ) + 
+  scale_y_continuous() +
+  scale_x_continuous() +
+  coord_cartesian() +
+  ggtitle("Primerjava prometnih nesreč z vzrokom neupoštevanja pravil o prednosti in nepravilnosti na cesti") + xlab("število nesreč kot posledica neupoštevanja pravil o prednosti") + ylab("število nesreč kot posledica nepravilnosti na cesti")
 
-#zemljevid_2005 <- get_map(location = c(lon = mean(koordinate_2005$lon_2005), lat = mean(koordinate_2005$lat_2005)), zoom = 5, maptype = "satellite", scale = 2)
-
-#ggmap(zemljevid_2005) +
-#    geom_point(data = koordinate_2005, aes(x = lon_2005, y = lat_2005, fill = "red", alpha = 0.8), size = 5, shape = 21) +
-#    guides(fill = FALSE, alpha = FALSE, size = FALSE)
