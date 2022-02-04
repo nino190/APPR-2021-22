@@ -1,5 +1,6 @@
 #2. faza
 library(tabulizer)
+source("libraries/libraries.r")
 
 sl <- locale("sl", decimal_mark=",", grouping_mark=".")
 
@@ -76,15 +77,23 @@ nesrece_uprava <- rep(0, 16)
 nesrece_alkotest <- rep(0, 16)
 nesrece_vzrok <- rep(0, 16)
 sestevek_nesrece <- rep(0, 16)
-
-
+nesrece_tip <- rep(0, 16)
 
 nesrece <- data.frame(x1 = 1:8)
 rownames(nesrece) <- seznam_PU[,"PU"]
 years <- 2005:2020
 
-vzrok <- data.frame(x1 = 1:11)
+seznam_vzrok <- 0
+seznam_tip <- 0
+seznam_vreme <- 0
+seznam_stanje <- 0
+seznam_vrsta <- 0
 
+vzrok <- data.frame(x1 = 1:11)
+tip <- data.frame(x1 = 1:10)
+vreme <- data.frame(x1 = 1:8)
+stanje <- data.frame(x1 = 1:9)
+vrsta <- data.frame(x1 = 1:5)
 sestavi <- function(){
     for (i in 2005:2020){
         a <- i - 2004
@@ -92,11 +101,11 @@ sestavi <- function(){
         leto <- leto[!duplicated(leto$zaporedna_stevilka),]
         poz_alko <- 0
 
-        for (k in 1:as.integer(tail(leto["zaporedna_stevilka"], n = 1))) {
-            if (leto[k, "alkotest"] > 0) {
+        for (j in 1:as.integer(tail(leto["zaporedna_stevilka"], n = 1))) {
+            if (leto[j, "alkotest"] > 0) {
                 poz_alko <- poz_alko + 1
             }
-            else if (leto[k, "pregled"] > 0) {
+            else if (leto[j, "pregled"] > 0) {
                 poz_alko <- poz_alko + 1
             }
         }
@@ -118,22 +127,81 @@ sestavi <- function(){
         nesrece[a] <<- seznam_nesrec
         sestevek_nesrece[a] <<- sum(seznam_nesrec)
 
-        seznam_vzrok <- distinct(leto["vzrok"])
+        seznam_vzrok <<- distinct(leto["vzrok"])
         sestevek_vzrok <- table(leto["vzrok"])
         vzrok[a] <<- sestevek_vzrok
+
+        seznam_tip <<- distinct(leto["tip"])
+        sestevek_tip <- table(leto["tip"])
+        tip[a] <<- sestevek_tip
+
+        seznam_vreme <<- distinct(leto["vreme"])
+        sestevek_vreme <- table(leto["vreme"])
+        vreme[a] <<- sestevek_vreme
+
+        seznam_stanje <<- distinct(leto["stanje_vozisca"])
+        sestevek_stanje <- table(leto["stanje_vozisca"])
+        stanje[a] <<- sestevek_stanje
+
+        seznam_vrsta <<- distinct(leto["vrsta_vozisca"])
+        sestevek_vrsta <- table(leto["vrsta_vozisca"])
+        vrsta[a] <<- sestevek_vrsta
 
     }
     return()
 }
 
 sestavi()
+sestevek_nesrece <- data.frame(sestevek_nesrece)
 names(nesrece_alkotest) <- as.vector(as.character(years))
-names(sestevek_nesrece) <- as.vector(as.character(years))
-sestevek_nesrece <- t(sestevek_nesrece)
+rownames(sestevek_nesrece) <- as.vector(as.character(years))
+colnames(sestevek_nesrece) <- as.vector("NESRECE.SKUPAJ")
 names(nesrece) <- as.vector(as.character(years))
 names(vzrok) <- as.vector(as.character(years))
+names(tip) <- as.vector(as.character(years))
+names(vreme) <- as.vector(as.character(years))
+names(stanje) <- as.vector(as.character(years))
+names(vrsta) <- as.vector(as.character(years))
+
 rownames(vzrok) <- seznam_vzrok[,"vzrok"]
+rownames(tip) <- seznam_tip[,"tip"]
+rownames(vreme) <- seznam_vreme[,"vreme"]
+rownames(vrsta) <- seznam_vrsta[, "vrsta_vozisca"]
+rownames(stanje) <- seznam_stanje[, "stanje_vozisca"]
+
+leto <- data.frame(c(2005:2020))
+rownames(leto) <- as.vector(as.character(years))
+colnames(leto) <- as.vector("LETO")
+
+skupek <- do.call(rbind, list(nesrece, vzrok, tip, vreme, stanje, vrsta, t(sestevek_nesrece), t(leto)))
+
+tip <- data.frame(t(tip))
+vreme <- data.frame(t(vreme))
+vrsta <- data.frame(t(vrsta))
 nesrece <- data.frame(t(nesrece))
 vzrok <- data.frame(t(vzrok))
+stanje <- data.frame(t(stanje))
+
+skupek <- do.call(cbind, list(nesrece, vzrok, tip, vreme, stanje, vrsta, sestevek_nesrece, leto))
+
+
+
 colnames(nesrece) <- make.names(colnames(nesrece))
 colnames(vzrok) <- make.names(colnames(vzrok))
+colnames(skupek) <- make.names(colnames(skupek))
+colnames(skupek)[28] <- as.vector("OSTALO2")
+colnames(skupek)[41] <- as.vector("OSTALO3")
+colnames(skupek)[50] <- as.vector("OSTALO4")
+vzrok <- cbind(vzrok, leto)
+tip <- cbind(tip, leto)
+vreme <- cbind(vreme, leto)
+vrsta <- cbind(vrsta, leto)
+nesrece <- cbind(nesrece, leto)
+stanje <- cbind(stanje, leto)
+
+vzrok1 <- melt(vzrok, "LETO")
+tip1 <- melt(tip, "LETO")
+vreme1 <- melt(vreme, "LETO")
+vrsta1 <- melt(vrsta, "LETO")
+nesrece1 <- melt(nesrece, "LETO")
+stanje1 <- melt(stanje, "LETO")
