@@ -1,33 +1,23 @@
 # Analiza podatkov s programom R - 2021/22 #
 Avtor: Nino Cajnkar
-## Analiza Industrije Vodke ##
+## Analiza Prometnih nesreč v Sloveniji ##
 
 ## Tematika ##
 
-V slopu mojega projekta si bomo pogledali statistiko prodaje alkoholne pijače Vodke za zadnjih nekaj let.
-Najprej si bomo ogledali splošno prodajo in konzumacijo izdelka in vpliv na celoten trg alkoholnih pijač.
-Nadalje bomo razdelili podatke na različne tipe in znamke vodk ter primerjali vpliv smernikov (na primer kakovost, cena, dostopnost) na prodajo posameznega izdelka.
+V slopu mojega projekta si bomo pogledali statistiko prometnih nesreč v Sloveniji za leta 2005 do 2020.
 
-## Podatki (za [Ameriko](https://www.statista.com/topics/3741/vodka-industry/#dossierKeyfigures) in [Evropo)](https://www.statista.com/outlook/cmo/alcoholic-drinks/spirits/vodka/europe): ##
-1. Statistika prodaje:
-* Svetovna prodaja
-* Velikost trga v Ameriki in Evropi
-* Prodaja posameznih znak
-* Prodaja posameznih tipov izdelka
-* Cenovna razporeditev
-2. Statistika izdelka:
-* Ime izdelka
-* Znamka
-* Tip (način izdelave)
-* Stopnja alkohola
-* Cena
-* Dostopnost
-3. Statistika večjih znamk:
-* Ime znamke
-* Prodaja
-* Kakovost
-* Dostopnost
-* Povprečna cena
+Nadalje bom razdelil podatke glede na vzrok nesreč, seštevek nesreč, razporeditev nesreč po policijskih upravah in mesecih.
+## Podatki (https://www.policija.si/o-slovenski-policiji/statistika/prometna-varnost, https://pxweb.stat.si/SiStatData/pxweb/sl/Data/Data/2222003S.px/##
+1. Statistika nesreč:
+* vzrok
+* stanje vozišča
+* alkoholiziranost
+* mesec nesreče
+* klasifikacija
+* tip nesreče
+* vreme
+* stanje vozišča
+* vrsta vozišča
 
 ## Program: ##
 Glavni program in poročilo se nahajata v datoteki projekt.Rmd. Ko ga prevedemo, se izvedejo programi, ki ustrezajo drugi, tretji in četrti fazi projekta:
