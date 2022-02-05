@@ -3,8 +3,6 @@ source("uvoz/uvoz.r")
 source("libraries/uvozi.zemljevid.r")
 source("libraries/libraries.r")
 
-nesrece_leta <- uvoz_nesrec_leta()
-
 ekstrat <- extract_tables("https://www.policija.si/images/stories/O_Policiji/Seznam_vseh_PP_01122017.pdf")
 seznam_PP <- do.call(rbind, ekstrat)
 seznam_PP <- as.data.frame(seznam_PP)
@@ -32,37 +30,40 @@ for (pp in names(sestevek_PP)){
         }
     }
 }
-zem_slo <- uvozi.zemljevid("http://biogeo.ucdavis.edu/data/gadm2.8/shp/SVN_adm_shp.zip", "SVN_adm1", encoding = "UTF-8")
 
-nesrece_alkohol <- barplot(nesrece_alkotest)
-nesrece_skupaj <- barplot(t(sestevek_nesrece))
-
+nesrece_alkohol <- ggplot() + 
+  geom_line(skupek, mapping = aes(x = LETO, y = ALKOHOL)) + labs(title = "Število prometnih nesreč pod vplivom alkohola") + xlab("leto") + ylab("število nesreč")
 
 graf_po_letih <- ggplot()+
-  geom_line (skupek, mapping = aes(x= LETO, y= NESRECE.SKUPAJ)) + labs(title = "Prometne nesreče po letih 2005 - 2020") + xlab("leto") + ylab("Število nesreč")
-
-
+  geom_line(skupek, mapping = aes(x= LETO, y= NESRECE.SKUPAJ)) + labs(title = "Prometne nesreče po letih 2005 - 2020") + xlab("leto") + ylab("Število nesreč")
 
 graf_vzroki <- ggplot(vzrok1, aes(x = LETO, y = value, fill = variable)) + 
-  geom_bar(stat = 'identity', position = "dodge") + 
-    theme(legend.position="bottom", legend.key.size = unit(0.2, "cm"))
+  geom_bar (stat = 'identity', position = "dodge") + 
+  theme(legend.position="bottom", legend.key.size = unit(0.2, "cm")) +
+  labs(title = "Število prometnih nesreč po vzroku") + xlab("leto") + ylab("število prometnih nesreč")
 
 graf_tipi <- ggplot(tip1, aes(x = LETO, y = value, fill = variable)) + 
   geom_bar(stat = 'identity', position = "dodge") +
-    theme(legend.position="bottom", legend.key.size = unit(0.2, "cm"))
+  theme(legend.position="bottom", legend.key.size = unit(0.2, "cm")) +
+  labs(title = "Število prometnih nesreč po tipu nesreče") + xlab("leto") + ylab("število prometnih nesreč")
 
 graf_vremena <- ggplot(vreme1, aes(x = LETO, y = value, fill = variable)) + 
   geom_bar(stat = 'identity', position = "dodge") +
-    theme(legend.position="bottom", legend.key.size = unit(0.2, "cm"))
+  theme(legend.position="bottom", legend.key.size = unit(0.2, "cm")) +
+  labs(title = "Število prometnih nesreč po vremenu") + xlab("leto") + ylab("število prometnih nesreč")
+
 
 graf_vrste <- ggplot(vrsta1, aes(x = LETO, y = value, fill = variable)) + 
   geom_bar(stat = 'identity', position = "dodge") +
-    theme(legend.position="bottom", legend.key.size = unit(0.2, "cm"))
+  theme(legend.position="bottom", legend.key.size = unit(0.2, "cm")) +
+  labs(title = "Število prometnih nesreč po vrsti vozišča") + xlab("leto") + ylab("število prometnih nesreč")
 
 graf_nesrece <- ggplot(nesrece1, aes(x = LETO, y = value, fill = variable)) + 
   geom_bar(stat = 'identity', position = "dodge") +
-    theme(legend.position="bottom", legend.key.size = unit(0.2, "cm"))
+  theme(legend.position="bottom", legend.key.size = unit(0.2, "cm")) +
+  labs(title = "Število prometnih nesreč po policijski upravi") + xlab("leto") + ylab("število prometnih nesreč")
 
 graf_stanja <- ggplot(stanje1, aes(x = LETO, y = value, fill = variable)) + 
   geom_bar(stat = 'identity', position = "dodge") +
-    theme(legend.position="bottom", legend.key.size = unit(0.2, "cm"))
+  theme(legend.position="bottom", legend.key.size = unit(0.2, "cm")) +
+  labs(title = "Število prometnih nesreč po stanju vozišča") + xlab("leto") + ylab("število prometnih nesreč")

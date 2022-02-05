@@ -12,6 +12,8 @@ library(tabulizer)
 library(gganimate)
 library(ggcorrplot)
 library(reshape2)
+library(janitor)
+library(rmarkdown)
 options(gsubfn.engine="R")
 
 # Uvozimo funkcije za pobiranje in uvoz zemljevida.
