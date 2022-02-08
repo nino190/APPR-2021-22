@@ -1,5 +1,4 @@
 # 4. faza
-source("vizualizacija/vizualizacija.r")
 
 nesrece_leta <- uvoz_nesrec_leta()
 mes <- data.frame(MESECI = c("januar", "februar", "marec", "april", "maj", "junij", "julij", "avgust", "september", "oktober", "november", "december"))
