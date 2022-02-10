@@ -21,7 +21,9 @@ source("libraries/libraries.r", encoding="UTF-8")
 V prvi fazi sem si izbral temo prometnih nesreč v Sloveniji zadnjih 15 let. Izbral sem podatke iz dveh virov, uradne podatke Policije Slovenije, kjer so podatki sicer že bili v CSV datoteki, vendar zbrani po posameznih letih, ter iz spletne strani statističnega urada Slovenije. Med drugim sem uporabil tudi seznam Policijskih postaj najden na spletni strani Slovenske Policije, kjer sem moral imena zbrati iz pdf datoteke.
 # Spletne povezave do podatkov:
 [Statistični_Urad](<https://pxweb.stat.si/SiStatData/pxweb/sl/Data/Data/2222003S.px/##>)
+
 [Slovenska_Policija](<https://www.policija.si/o-slovenski-policiji/statistika/prometna-varnost>)
+
 [Seznam_Policijskih_Postaj](https://www.policija.si/images/stories/O_Policiji/Seznam_vseh_PP_01122017.pdf)
 ***
 
@@ -131,7 +133,7 @@ Podatke o nesrečah glede na pristojnost policijskih uprav pa sem tudi uredil v 
 ```{r histogram11, fig.align='center'}
 graf1
 ```
-```{r histogram9, fig.align='center'}
+```{r histogram12, fig.align='center'}
 graf2
 ```
 ## Zaključek

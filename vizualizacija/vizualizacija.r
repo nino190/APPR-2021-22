@@ -1,5 +1,4 @@
 #3. faza
-source("uvoz/uvoz.r")
 ekstrat <- extract_tables("https://www.policija.si/images/stories/O_Policiji/Seznam_vseh_PP_01122017.pdf")
 seznam_PP <- do.call(rbind, ekstrat)
 seznam_PP <- as.data.frame(seznam_PP)

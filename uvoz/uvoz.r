@@ -29,6 +29,7 @@ names(seznam_PP) <- headers
 seznam_PU <- distinct(seznam_PP[c("PU")])
 seznam_imen_PP <- seznam_PP[c("ime")]
 
+prvo <- uvoz_nesrec("podatki/pn2005.csv") 
 uprava <- data.frame(rep(0, nrow(prvo)))
 colnames(uprava) <- "uprava"
 prvo <- cbind(prvo, uprava)
