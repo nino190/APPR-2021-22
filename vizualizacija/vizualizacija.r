@@ -127,12 +127,13 @@ Slovenija$uprava <- gsub('Podravska', 'MARIBOR', Slovenija$uprava)
 Slovenija$uprava <- gsub('Koroška', 'CELJE', Slovenija$uprava)
 Slovenija$uprava <- gsub('Pomurska', 'MURSKA SOBOTA', Slovenija$uprava)
 
+po_letih_2020 <- filter(po_letih, leto == 2020)
+
 po_letih_2020$oznaka <- paste(po_letih_2020$uprava, po_letih_2020$sestevek, sep=",  ")
 po_letih_2020 <- po_letih_2020[-7,]
 
 points <- data.frame(oznaka = po_letih_2020$oznaka, long = c(15.263889, 13.729444, 14.355556, 14.5, 15.643889, 16.163056, 13.643333, 15.162778), lat = c(46.228889, 45.546389, 46.243611, 46.0500, 46.5625, 46.66, 45.955833, 45.798056))
 
-po_letih_2020 <- filter(po_letih, leto == 2020)
 po_letih_2020 <-data.frame(po_letih_2020)
 zemljevid <- ggplot() +
   geom_polygon(data = right_join(po_letih_2020[-1], Slovenija, by = "uprava"), aes(x=long, y=lat, group=group, fill=sestevek)) +

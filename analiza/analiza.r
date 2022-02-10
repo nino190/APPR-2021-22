@@ -24,64 +24,64 @@ graf1 <- po_letih %>%
   ylim(0, 10000) +
   theme_classic()
 
-dendrogram = hclust(dist(po_letih[, -2]))
+# dendrogram = hclust(dist(po_letih[, -2]))
 
 
-graf2 <- tibble(
-  k = 143:1,
-  visina = hclust(dist(po_letih[, -2]))$height
-) %>%
-  ggplot() +
-  geom_line(
-    mapping = aes(x = k, y = visina),
-    color = "red"
-  ) +
-  geom_point(
-    mapping = aes(x = k, y = visina),
-    color = "red"
-  ) +
-  xlim(0, 30) +
-  scale_x_continuous()(
-    breaks = seq(from = 1, to = 30, by = 1),
-    limits = c(0, 30)
-  ) +
-  labs(
-    x = "število skupin (k)",
-    y = "višina združevanja"
-  ) +
-  theme_classic()
+# graf2 <- tibble(
+#   k = 143:1,
+#   visina = hclust(dist(po_letih[, -2]))$height
+# ) %>%
+#   ggplot() +
+#   geom_line(
+#     mapping = aes(x = k, y = visina),
+#     color = "red"
+#   ) +
+#   geom_point(
+#     mapping = aes(x = k, y = visina),
+#     color = "red"
+#   ) +
+#   xlim(0, 30) +
+#   scale_x_continuous()(
+#     breaks = seq(from = 1, to = 30, by = 1),
+#     limits = c(0, 30)
+#   ) +
+#   labs(
+#     x = "število skupin (k)",
+#     y = "višina združevanja"
+#   ) +
+#   theme_classic()
 
-skupine_2 = dendrogram %>% cutree(k = 2) %>% as.ordered()
-skupine_3 = dendrogram %>% cutree(k = 3) %>% as.ordered()
-skupine_5 = dendrogram %>% cutree(k = 5) %>% as.ordered()
+# skupine_2 = dendrogram %>% cutree(k = 2) %>% as.ordered()
+# skupine_3 = dendrogram %>% cutree(k = 3) %>% as.ordered()
+# skupine_5 = dendrogram %>% cutree(k = 5) %>% as.ordered()
 
-diagram_skupine <- function(podatki, oznake, skupine, k) {
-  podatki <- podatki %>%
-    bind_cols(skupine) %>%
-    rename(skupina = ...4)
+# diagram_skupine <- function(podatki, oznake, skupine, k) {
+#   podatki <- podatki %>%
+#     bind_cols(skupine) %>%
+#     rename(skupina = ...4)
 
-  d <- podatki %>%
-  ggplot(
-    mapping = aes(
-      x = x, y = y, color = skupina
-    )
-  ) +
-  geom_point() +
-  geom_label(label = oznake, size = 2) +
-  scale_color_hue() +
-  theme_classic()
+#   d <- podatki %>%
+#   ggplot(
+#     mapping = aes(
+#       x = x, y = y, color = skupina
+#     )
+#   ) +
+#   geom_point() +
+#   geom_label(label = oznake, size = 2) +
+#   scale_color_hue() +
+#   theme_classic()
   
-  for (i in 1:k) {
-    d <- d + geom_encircle(
-      data <- podatki %>%
-        filter(skupina == i)
-    )
-  }
-  d
-}
-sk2 <- diagram_skupine(po_letih, po_letih$uprava, skupine_2, 2)
-sk3 <- diagram_skupine(po_letih, po_letih$uprava, skupine_3, 3)
-sk5 <- diagram_skupine(po_letih, po_letih$uprava, skupine_5, 5)
+#   for (i in 1:k) {
+#     d <- d + geom_encircle(
+#       data <- podatki %>%
+#         filter(skupina == i)
+#     )
+#   }
+#   d
+# }
+# sk2 <- diagram_skupine(po_letih, po_letih$uprava, skupine_2, 2)
+# sk3 <- diagram_skupine(po_letih, po_letih$uprava, skupine_3, 3)
+# sk5 <- diagram_skupine(po_letih, po_letih$uprava, skupine_5, 5)
 
 vse_nesrece$leto <- as.character(vse_nesrece$leto)
 vse_nesrece$sestevek <- as.character(vse_nesrece$sestevek)

@@ -133,9 +133,7 @@ Podatke o nesrečah glede na pristojnost policijskih uprav pa sem tudi uredil v 
 ```{r histogram11, fig.align='center'}
 graf1
 ```
-```{r histogram12, fig.align='center'}
-graf2
-```
+
 ## Zaključek
 Skozi analizo tematike smo ugotovili najpogostejše kraje nesreč, tipe, vzroke, vremena, vrste ter stanja, analizirali vse podatke posebej ter prišli do naslednjih ugotovitev:
 - število nesreč se je drastično zmanjšalo

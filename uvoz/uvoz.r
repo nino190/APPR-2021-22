@@ -46,8 +46,6 @@ sestavi <- function() {
         colnames(uprava2) <- "uprava"
         zapored <- cbind(zapored, uprava2)
         skupek <<- rbind(skupek, zapored)
-
-        a <- i - 2004
     }
     return()
 }
