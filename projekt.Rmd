@@ -34,38 +34,13 @@ V drugi fazi sem uvozil tabele s podatki v CSV obliki, ki sem jih dobil na stran
 
 1. TABELA : Podatki o prometnih nesrečah med 2005 in 2020
 - "zaporedna_stevilka" (numeric),
-- "klasifikacija"(character),
 - "postaja" (character),
 - "datum",
-- "ura",
-- "v_naselju" (character),
-- "lokacija" (character),
-- "vrsta_ceste_naselja" (character),
-- "sifra_ceste_naselja" (numeric),
-- "tekst_cesta_naselje" (character),
-- "sifra_odseka_ulice" (numeric),
-- "tekst_odseka_ulice" (character),
-- "stacionaza" (numeric),
-- "opis" (character),
 - "vzrok" (character),
 - "tip" (character),
 - "vreme" (character),
-- "stanje_prometa" (character),
 - "stanje_vozisca" (character),
 - "vrsta_vozisca" (character),
-- "longitude" (numeric),
-- "latitude"(numeric),
-- "zap_st_osebe" (numeric),
-- "povzrocitelj" (character),
-- "starost" (numeric),
-- "spol" (character),
-- "UE_stalnega_prebivalisca" (character),
-- "drzavljanstvo" (character),
-- "poskodba_udelezenca" (character),
-- "vrsta_udelezenca" (character),
-- "varnostni_pas" (character),
-- "vozniski_staz_leta" (numeric),
-- "vozniski_staz_mesec" (numeric),
 - "alkotest" (numeric),
 - "pregled" (numeric)
 
@@ -83,47 +58,51 @@ V drugi fazi sem uvozil tabele s podatki v CSV obliki, ki sem jih dobil na stran
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
-Graf števila prometnih nesreč v letih 2005-2020:
+Prvi graf predstavlja skupno število prometnih nesreč v letih med 2005 in 2020. Opazimo lahko, da se je število nesreč drastično zmanjšalo, vzroki česar so predvsem spremembe zakonov na višje denarne kazni za prekrške ter poostren nadzor prometa:
 
 ```{r histogram1, fig.align='center'}
-graf_po_letih
+graf_vse
 ```
-Graf števila prometnih nesreč glede na alkoholiziranost:
+Drugi graf predstavlja število prometnih nesreč glede na alkoholiziranost udeležencev v letih med 2005 in 2020. Prav tako kot skupno število nesreč se je tudi alkoholiziranost udeležencev oziroma povzročiteljev prometnih nesreč zmanjšala, uspeh česar lahko dosodimo številnim akcijam ozaveščanja voznikov o nevarnostih vožnje pod vplivom opiatov, v tem primeru alkohola.
 
 ```{r histogram2, fig.align='center'}
-nesrece_alkohol
+graf_alkohol
 ```
-Graf števila prometnih nesreč glede na pristojnosti Policijskih Uprav:
+Tretji graf predstavlja število prometnih nesreč po lokaciji, specifično glede na pristojnost posameznih Policijskih Uprav. Kot pričakovano se večina prometnih nesreč zgodi na območju Ljubljane, ker je največje slovensko mesto z ogromnim številom dnevnih migracij, predvsem na relaciji služba in dom posameznih udeležencev prometa. Prav tako se je število nesreč po posameznih policijskih upravah drastično zmanjšalo, kar je za pričakovati glede na to, da se je skupno število nesreč zmanjšalo.
 
 ```{r histogram3, fig.align='center'}
-graf_nesrece
+graf_nesrec
 ```
-Graf števila prometnih nesreč glede na tip nesreče:
+Zemljevid prikazuje število nesreč po posamezni policijski upravi v letu 2020:
+
+```{r zemljevid, fig.align='center'}
+zemljevid
+```
+Četrti graf prikazuje število nesreč glede na tip nesreče in sicer med leti 2005 in 2020. Najpogostejši tip nesreče je bočno trčenje, kar pomeni predvsem nepazljivost voznikov na cestišču, saj se ta tip zgodi v primeru odvzema prednosti, prevoženju rdeče luči in podobnih hujših kršitvah. Za zmanjšanje tega tipa nesreče bi morali narediti ceste (ovinke, križišča) bolj pregledne ter opozarjati na neuporabo motečih sredstev v avtu, na primer uporaba telefona med vožnjo.
 
 ```{r histogram4, fig.align='center'}
 graf_tipi
 ```
-Graf števila prometnih nesreč glede na vreme:
+Peti graf prikazuje povprečen odstotek vremena v času nesreče izračunan za interval let od 2005 do 2020. Opazimo da se največ nesreč zgodi pri jasnem vremenu, ter da izredne vremenske okoliščine ne vplivajo preveč na število nesreč.
 
 ```{r histogram5, fig.align='center'}
-graf_vremena
+graf_vreme
 ```
-Graf števila prometnih nesreč glede vrsto vozišča:
+Šesti graf prikazuje število prometnih nesreč glede vrsto vozišča v letih med 2005 in 2020. Tukaj rezultati niso presenetljivi, saj so Slovenske ceste v javni rabi skoraj povsod asfaltirane in tako ne pride do zanimivejših odstopanj. Ceste so dobro vzdrževane.
 
 ```{r histogram6, fig.align='center'}
 graf_vrste
 ```
-Graf števila prometnih nesreč glede stanje vozišča:
+Sedmi graf prikazuje število prometnih nesreč glede stanje vozišča med leti 2005 in 2020. Na prvem mestu je suho vozišče, kar je pričakovano, glede na to da je najpogostejše vreme jasno. Vendar pa je na drugem mestu mokro stanje vozišča, kar se e sklada z dejstvom, da se samo 10% nesreč zgodi v dežju. Sklepamo lahko, da je mokro vozišče precej bolj nevarno od ostalih tipov ter morajo biti vozniki v tem primeru še posebej pozorni in držati varnostno razdaljo, zaviralni čas se na spolzkih površinah namreč poveča.
 
 ```{r histogram7, fig.align='center'}
 graf_stanja
 ```
-Graf števila prometnih nesreč glede vzrok nesreče:
+Osmi graf prikazuje povprečen odstotek vzroka nesreče izračunan za interval let od 2005 do 2020. Najpogostejši vzrok nesreče je premik z vozilom, kar je pričakovano, opozoriti pa moramo na nepravilno prehitevanje in neprilagojeno hitrost, kar sta dva precej povezana vzroka za nastanek nesreče. Vozniki se morajo strožje držati prometnih pravil ter voziti po načelu defenzivne vožnje ter morebitne nevarne okoliščine predvidevati in ne povzročati.
 
 ```{r histogram8, fig.align='center'}
 graf_vzroki
 ```
-
 
 ***
 
@@ -147,3 +126,19 @@ Zaključimo lahko, da v zadnjih 5 letih ni prišlo do bistvenega odstopanja od p
 graf_predict2
 ```
 ***
+
+Podatke o nesrečah glede na pristojnost policijskih uprav pa sem tudi uredil v dendrogram ter posamezne podatke združil v skupine. Enajsti graf vizualizira podatke s okrajšavami posamezne policijske uprave, medtem ko je dvanajsti graf dendrogram naših podatkov.
+```{r histogram11, fig.align='center'}
+graf1
+```
+```{r histogram9, fig.align='center'}
+graf2
+```
+## Zaključek
+Skozi analizo tematike smo ugotovili najpogostejše kraje nesreč, tipe, vzroke, vremena, vrste ter stanja, analizirali vse podatke posebej ter prišli do naslednjih ugotovitev:
+- število nesreč se je drastično zmanjšalo
+- Najnevarnejše območje glede na število nesreč v Sloveniji je Ljubljana
+- Najpogostejši vroki nesreč so posledica nepozornosti med vožnjo, vozniki se morajo naučiti voziti defenzivno
+- Najnevarnejša podlaga za vožnjo je mokra podlaga, vozniki naj bodo še posebej previdni na spolzkih površinah.
+- Stanje izrabe alkohola med vožnjo se zmanjšuje
+- Število nesreč se bo v prihodnjih nadalje zmanjševalo
